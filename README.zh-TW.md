@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.0
+# Hololive Dreams Auto Collect Cooking — 1.1.1
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Windows版《hololive Dreams》食材妙廚房的自動料理程式。透過遊�
 
 ## 下載
 
-前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.0)，下載 `Collect-Cooking-Auto-v1.1.0-win64.7z`。用7-Zip解壓，再執行解壓資料夾中的 `Collect-Cooking-Auto-v1.1.0.exe`。
+前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1)，下載 `Collect-Cooking-Auto-v1.1.1-win64.7z`。用7-Zip解壓，再執行解壓資料夾中的 `Collect-Cooking-Auto-v1.1.1.exe`。
 
 請保留EXE旁的 `_internal` 資料夾。已包含Python、推論函式庫及五份模型權重。`SHA256SUMS.txt`用於核對下載檔案；`models.zip`供原始碼使用。GitHub自動產生的原始碼ZIP需另外安裝依賴與模型。
 
@@ -14,7 +14,7 @@ Windows版《hololive Dreams》食材妙廚房的自動料理程式。透過遊�
 
 - 辨識食譜食材、剩餘需求及槽位，規劃目標拾取、三消清理與抖盤。
 - 提供「**標準**」（ResNet18）與「**進階**」（ResNet101）。標準運算需求較低，進階適合效能較充足的電腦。
-- 模型載入與遊戲開始分開，載入的點位分類器同時驗證按需補充候選。
+- 點擊開始後自動載入所選模型並預熱，完成後切回遊戲並開始。點位分類器同時驗證按需補充候選。
 - 可設定目標局數，完成一局後自動接續，達標後停止。
 - 支援英文、繁體中文、日文、韓文、印尼文及簡體中文，語言選擇套用於程式介面。
 - 提供自訂快捷鍵、執行紀錄及可選的本機開發者診斷模式。
@@ -23,8 +23,8 @@ Windows版《hololive Dreams》食材妙廚房的自動料理程式。透過遊�
 
 1. 開啟遊戲，進入食材妙廚房。
 2. 執行EXE，選擇程式語言及辨識模型，輸入正整數目標局數；初次使用預設5局。
-3. 點擊「**載入模型**」，等待顯示模型已載入。
-4. 點擊「**開始**」後，程式會嘗試還原遊戲視窗並切到前景，也可在遊戲中按 **F8**。若Windows阻止切換，請手動切回遊戲，並保持畫面無遮擋。
+3. 點擊「**開始**」或按 **F8**，自動載入所選模型。載入中可按「**停止**」或 **Esc** 取消。
+4. 載入完成後，程式會嘗試還原遊戲視窗並切到前景，隨即自動開始。若Windows阻止切換，請手動切回遊戲，並保持畫面無遮擋。
 5. **F8**暫停／繼續，**Esc**或「**停止**」結束執行。切換焦點會暫停輸入，切回遊戲按F8繼續。切換模型前先停止，再選擇並載入另一個模型。
 
 點擊快捷鍵框後，按下要使用的按鍵或Ctrl／Alt／Shift組合鍵。未完成輸入便離開欄位時，保留原設定；設定會保存供下次使用。

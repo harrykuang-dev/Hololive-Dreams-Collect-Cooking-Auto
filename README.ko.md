@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.0
+# Hololive Dreams Auto Collect Cooking — 1.1.1
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Windows판 *hololive Dreams*의 모아 쿠킹을 자동으로 플레이하는 �
 
 ## 다운로드
 
-[GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.0)에서 `Collect-Cooking-Auto-v1.1.0-win64.7z`를 다운로드하세요. 7-Zip으로 압축을 해제한 뒤 폴더의 `Collect-Cooking-Auto-v1.1.0.exe`를 실행하세요.
+[GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1)에서 `Collect-Cooking-Auto-v1.1.1-win64.7z`를 다운로드하세요. 7-Zip으로 압축을 해제한 뒤 폴더의 `Collect-Cooking-Auto-v1.1.1.exe`를 실행하세요.
 
 EXE 옆의 `_internal` 폴더를 유지하세요. Python, 추론 라이브러리와 모델 가중치 5개가 포함되어 있습니다. `SHA256SUMS.txt`로 다운로드를 확인할 수 있으며 `models.zip`은 소스 실행용입니다. GitHub의 소스 ZIP은 의존 패키지와 모델을 별도로 설치해야 합니다.
 
@@ -14,7 +14,7 @@ EXE 옆의 `_internal` 폴더를 유지하세요. Python, 추론 라이브러리
 
 - 레시피, 남은 필요 수량과 슬롯을 인식하여 식재료 선택, 3개 제거와 접시 섞기를 계획합니다.
 - **표준**(ResNet18)과 **고급**(ResNet101)을 제공합니다. 표준은 연산 요구량이 낮고 고급은 성능에 여유가 있는 컴퓨터에 적합합니다.
-- 모델 불러오기와 게임 시작을 분리하며, 불러온 위치 분류 모델로 보조 후보도 검증합니다.
+- 시작 시 선택한 모델을 자동으로 불러오고 준비가 완료되면 게임 창을 앞으로 가져와 시작합니다. 위치 분류 모델로 보조 후보도 검증합니다.
 - 목표 판수를 설정하고 한 판이 끝나면 자동으로 이어서 진행하며 목표에 도달하면 중지합니다.
 - 영어, 번체 중국어, 일본어, 한국어, 인도네시아어와 간체 중국어를 지원합니다. 언어 선택은 프로그램 화면에 적용됩니다.
 - 사용자 지정 단축키, 실행 기록과 선택 가능한 로컬 진단을 제공합니다.
@@ -23,8 +23,8 @@ EXE 옆의 `_internal` 폴더를 유지하세요. Python, 추론 라이브러리
 
 1. 게임을 열고 모아 쿠킹에 들어가세요.
 2. EXE를 실행하고 언어와 인식 모델을 선택한 뒤 양의 정수로 목표 판수를 입력하세요. 처음에는 5판으로 설정됩니다.
-3. **모델 불러오기**를 누르고 준비 완료를 기다리세요.
-4. **시작**을 누르면 프로그램이 최소화된 게임 창을 복원하고 앞으로 가져오기를 시도합니다. 게임에서 **F8**을 눌러 시작할 수도 있습니다. Windows가 전환을 차단하면 직접 게임으로 돌아가고 창을 가리지 마세요.
+3. **시작**을 누르거나 **F8**을 누르면 선택한 모델을 자동으로 불러옵니다. 불러오는 중에는 **중지** 또는 **Esc**로 취소할 수 있습니다.
+4. 불러오기가 완료되면 최소화된 게임 창을 복원하고 앞으로 가져오기를 시도한 뒤 자동으로 시작합니다. Windows가 전환을 차단하면 직접 게임으로 돌아가고 창을 가리지 마세요.
 5. **F8**은 일시 정지/재개, **Esc** 또는 **중지**는 실행 종료입니다. 다른 창으로 이동하면 입력이 일시 정지됩니다. 게임으로 돌아가 F8로 재개하세요. 모델을 바꾸려면 먼저 중지한 뒤 다시 선택하여 불러오세요.
 
 단축키 입력란을 누르고 원하는 키나 Ctrl/Alt/Shift 조합을 누르면 변경됩니다. 입력을 끝내지 않고 벗어나면 이전 설정을 유지합니다. 설정은 다음 실행에도 저장됩니다.

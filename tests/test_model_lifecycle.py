@@ -1,4 +1,4 @@
-"""Explicit model loading must never imply permission to start gameplay."""
+"""Start loads models before focusing the game; cancellation must win."""
 import json
 from pathlib import Path
 import sys
@@ -54,25 +54,41 @@ class Lifecycle(unittest.TestCase):
         self.app.poll()
         self.assertEqual(self.app.run_state,'ready')
 
-    def test_idle_and_loading_hotkeys_cannot_start(self):
+    def test_start_loads_once_then_focuses_and_starts_when_ready(self):
         app=self.app
-        self.assertTrue(app.start_button.instate(['disabled']))
-        self.assertFalse(app.start_listener.enabled)
-        app.messages.put(('start',None));app.poll()
-        self.assertIsNone(app.child)
-        app.load_models()
-        self.assertIn('--wait-for-start',app.child.command)
-        self.assertNotIn('--autostart',app.child.command)
-        app.messages.put(('start',None));app.poll()
-        app.start()
-        self.assertFalse(app.start_path.exists())
-        self.assertEqual(app.run_state,'loading')
+        self.assertTrue(app.start_button.instate(['!disabled']))
+        self.assertTrue(app.start_listener.enabled)
+        self.assertFalse(hasattr(app,'load_button'))
+        with patch.object(gui,'request_game_foreground') as focus:
+            app.start()
+            child=app.child
+            self.assertIn('--wait-for-start',child.command)
+            self.assertEqual(app.run_state,'loading')
+            self.assertTrue(app.start_requested)
+            app.start();app.messages.put(('start',None));app.poll()
+            self.assertIs(app.child,child)
+            self.assertFalse(app.start_path.exists())
+            focus.assert_not_called()
+            gui.publish_state(app.state_path,'ready');app.poll()
+            focus.assert_called_once_with()
+            self.assertEqual(json.loads(app.start_path.read_text()),{'start':True})
+            self.assertEqual(app.run_state,'starting')
+            self.assertFalse(app.start_requested)
+            app.poll();focus.assert_called_once()
 
-    def test_model_ready_is_separate_from_actual_start(self):
+    def test_idle_hotkey_loads_selected_model_and_settings(self):
+        app=self.app;app.model.set('resnet101');app.games.set('10')
+        app.messages.put(('start',None));app.poll()
+        self.assertEqual(app.run_state,'loading')
+        self.assertIn('resnet101',app.child.command)
+        self.assertIn('10',app.child.command)
+        self.assertTrue(app.stop_listener.enabled)
+        self.assertFalse(app.start_listener.enabled)
+
+    def test_internal_loading_without_start_request_still_waits(self):
         self.ready();app=self.app
         self.assertFalse(app.start_path.exists())
         self.assertTrue(app.start_listener.enabled)
-        self.assertTrue(app.load_button.instate(['disabled']))
         app.start()
         self.assertEqual(json.loads(app.start_path.read_text()),{'start':True})
         self.assertEqual(app.run_state,'starting')
@@ -86,55 +102,83 @@ class Lifecycle(unittest.TestCase):
             self.assertEqual(app.run_state,'ready')
             return False  # Windows may deny activation; the worker waits safely.
         with patch.object(gui,'request_game_foreground',side_effect=activate) as focus:
-            app.start()
-            focus.assert_called_once_with()
+            app.start();focus.assert_called_once_with()
         self.assertTrue(app.start_path.exists())
         self.assertEqual(app.run_state,'starting')
 
-    def test_loading_help_and_stopped_states_do_not_request_focus(self):
-        app=self.app
+    def test_stop_during_loading_cancels_deferred_start(self):
+        app=self.app;app.start();app.stop()
+        gui.publish_state(app.state_path,'ready')
         with patch.object(gui,'request_game_foreground') as focus:
-            app.start()
-            app.load_models();app.start()
-            focus.assert_not_called()
-        gui.publish_state(app.state_path,'ready');app.poll()
-        with patch.object(gui,'request_game_foreground') as focus:
-            app.show_model_help();app.start()
-            app.close_model_help();app.stop();app.start()
-            focus.assert_not_called()
-
-    def test_help_disables_start_and_preserves_loaded_model(self):
-        self.ready();app=self.app
-        child=app.child
-        app.show_model_help();app.start()
+            app.poll();app.start();focus.assert_not_called()
+        self.assertTrue(app.stop_path.exists())
         self.assertFalse(app.start_path.exists())
+        self.assertFalse(app.start_requested)
+        app.child.code=0;app.poll()
+        self.assertIsNone(app.child)
+        self.assertTrue(app.start_button.instate(['!disabled']))
+        app.start();self.assertTrue(app.start_requested)
+
+    def test_failed_loading_does_not_start_and_allows_retry(self):
+        app=self.app;app.start();start_path=app.start_path
+        app.child.code=1
+        gui.publish_state(app.state_path,'ready')
+        with patch.object(gui,'request_game_foreground') as focus:
+            app.poll();focus.assert_not_called()
+        self.assertFalse(start_path.exists())
+        self.assertFalse(app.start_requested)
+        self.assertEqual(app.run_state,'error')
+        self.assertTrue(app.start_button.instate(['!disabled']))
+        app.start();self.assertEqual(app.run_state,'loading')
+
+    def test_invalid_input_and_spawn_error_leave_no_start_request(self):
+        app=self.app;app.games.set('0')
+        with patch.object(gui.messagebox,'showerror') as error:
+            app.start();error.assert_called_once()
+        self.assertIsNone(app.child);self.assertFalse(app.start_requested)
+        app.games.set('5')
+        with patch.object(gui.subprocess,'Popen',side_effect=OSError('Cannot launch')):
+            app.start()
+        self.assertIsNone(app.child);self.assertFalse(app.start_requested)
+        self.assertEqual(app.run_state,'error')
+
+    def test_help_defers_automatic_start_until_closed(self):
+        app=self.app;app.start();app.show_model_help()
+        gui.publish_state(app.state_path,'ready')
+        with patch.object(gui,'request_game_foreground') as focus:
+            app.poll();focus.assert_not_called()
+            self.assertTrue(app.start_requested)
+            self.assertFalse(app.start_path.exists())
+            app.close_model_help();app.poll();focus.assert_called_once()
+        self.assertTrue(app.start_path.exists())
+
+    def test_closing_during_loading_cancels_start(self):
+        app=self.app;app.start();app.close()
+        gui.publish_state(app.state_path,'ready')
+        with patch.object(gui,'request_game_foreground') as focus:
+            app.poll();focus.assert_not_called()
+        self.assertFalse(app.start_requested)
+        self.assertFalse(app.start_path.exists())
+
+    def test_help_blocks_idle_button_and_hotkey(self):
+        app=self.app;app.show_model_help();app.start()
+        app.messages.put(('start',None));app.poll()
+        self.assertIsNone(app.child)
         self.assertFalse(app.start_listener.enabled)
         self.assertTrue(app.start_button.instate(['disabled']))
         app.close_model_help()
-        self.assertIs(app.child,child)
         self.assertTrue(app.start_listener.enabled)
 
-    def test_stop_before_start_unloads_without_a_start_request(self):
-        self.ready();app=self.app
-        app.stop()
-        self.assertTrue(app.stop_path.exists())
-        self.assertFalse(app.start_path.exists())
-        app.child.code=0;app.poll()
-        self.assertIsNone(app.child)
-        self.assertTrue(app.start_button.instate(['disabled']))
-        self.assertTrue(app.load_button.instate(['!disabled']))
-        app.model.set('resnet101');app.load_models()
-        self.assertIn('resnet101',app.child.command)
-
-    def test_language_change_preserves_progress_and_state(self):
-        self.ready();app=self.app
-        app.completed=3
+    def test_language_change_preserves_pending_start_and_progress(self):
+        app=self.app;app.start();app.completed=3
         for language in gui.TEXT:
             app.language.set(language);app.translate()
-            self.assertEqual(app.run_state,'ready')
+            self.assertEqual(app.run_state,'loading')
+            self.assertTrue(app.start_requested)
             self.assertIn('3 /',app.count.cget('text'))
-            self.assertEqual(app.load_button.cget('text'),gui.UI[language]['load'])
-            self.assertTrue(app.start_button.instate(['!disabled']))
+            self.assertTrue(app.start_button.instate(['disabled']))
+        gui.publish_state(app.state_path,'ready');app.poll()
+        self.assertEqual(app.run_state,'starting')
 
     def test_capture_prompt_is_display_only_and_cancel_restores_saved_key(self):
         app=self.app

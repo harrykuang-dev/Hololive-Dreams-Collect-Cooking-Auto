@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.0
+# Hololive Dreams Auto Collect Cooking — 1.1.1
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Windows版《hololive Dreams》拼配厨房的自动料理程序。通过游戏�
 
 ## 下载
 
-前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.0)，下载 `Collect-Cooking-Auto-v1.1.0-win64.7z`。用7-Zip解压，再运行解压文件夹中的 `Collect-Cooking-Auto-v1.1.0.exe`。
+前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1)，下载 `Collect-Cooking-Auto-v1.1.1-win64.7z`。用7-Zip解压，再运行解压文件夹中的 `Collect-Cooking-Auto-v1.1.1.exe`。
 
 请保留EXE旁的 `_internal` 文件夹。已包含Python、推理库及五份模型权重。`SHA256SUMS.txt`用于核对下载文件；`models.zip`供源码使用。GitHub自动生成的源码ZIP需要另外安装依赖和模型。
 
@@ -14,7 +14,7 @@ Windows版《hololive Dreams》拼配厨房的自动料理程序。通过游戏�
 
 - 识别食谱食材、剩余需求及槽位，规划目标拾取、三消清理与抖盘。
 - 提供「**标准**」（ResNet18）与「**进阶**」（ResNet101）。标准运算需求较低，进阶适合性能较充足的电脑。
-- 模型加载与游戏开始分开，加载的点位分类器同时验证按需补充候选。
+- 点击开始后自动加载所选模型并预热，完成后切回游戏并开始。点位分类器同时验证按需补充候选。
 - 可设置目标局数，完成一局后自动继续，达标后停止。
 - 支持英文、繁体中文、日文、韩文、印尼文及简体中文，语言选择应用于程序界面。
 - 提供自定义快捷键、运行记录及可选的本地开发者诊断模式。
@@ -23,8 +23,8 @@ Windows版《hololive Dreams》拼配厨房的自动料理程序。通过游戏�
 
 1. 打开游戏，进入拼配厨房。
 2. 运行EXE，选择程序语言和识别模型，输入正整数目标局数；首次使用默认5局。
-3. 点击「**加载模型**」，等待显示模型已加载。
-4. 点击「**开始**」后，程序会尝试还原游戏窗口并切到前台，也可在游戏中按 **F8**。若Windows阻止切换，请手动切回游戏，并保持画面无遮挡。
+3. 点击「**开始**」或按 **F8**，自动加载所选模型。加载中可按「**停止**」或 **Esc** 取消。
+4. 加载完成后，程序会尝试还原游戏窗口并切到前台，随即自动开始。若Windows阻止切换，请手动切回游戏，并保持画面无遮挡。
 5. **F8**暂停／继续，**Esc**或「**停止**」结束运行。切换焦点会暂停输入，切回游戏按F8继续。切换模型前先停止，再选择并加载另一个模型。
 
 点击快捷键框后，按下要使用的按键或Ctrl／Alt／Shift组合键。未完成输入就离开输入框时，保留原设置；设置会保存供下次使用。

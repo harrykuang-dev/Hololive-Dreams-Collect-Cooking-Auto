@@ -15,7 +15,7 @@ import tempfile
 import shutil
 import webbrowser
 
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 DEFAULT_CLIENT_SIZE = (517, 1055)
 DEFAULT_CLIENT_DPI = 120
 ROOT = Path(__file__).resolve().parent
@@ -50,6 +50,7 @@ class CookingApp:
     def __init__(self, root):
         self.root, self.child, self.stream = root, None, None
         self.closing = False
+        self.start_requested = False
         self.run_state = 'idle'
         self.state_revision = None
         self.help_dialog = None
@@ -158,9 +159,7 @@ class CookingApp:
             second.grid_configure(row=1 if stacked else 0,column=0 if stacked else 1)
         model_row.bind('<Configure>',fit_models)
         self.hint.bind('<Configure>',lambda e:self.hint.configure(wraplength=max(self.px(130),e.width)))
-        self.load_button=ttk.Button(main,command=self.load_models,style='Primary.TButton')
-        self.load_button.grid(row=5,column=0,sticky='ew',pady=(0,self.px(8)))
-        controls=ttk.Frame(main);controls.grid(row=6,column=0,sticky='ew',pady=(0,self.px(12)));controls.columnconfigure((0,1),weight=1,uniform='buttons')
+        controls=ttk.Frame(main);controls.grid(row=5,column=0,sticky='ew',pady=(0,self.px(12)));controls.columnconfigure((0,1),weight=1,uniform='buttons')
         self.start_button=ttk.Button(controls,command=self.start,style='Primary.TButton',image=(self.theme.operation_icons['play'],'disabled',self.theme.disabled_play_icon),compound='left')
         self.start_button.grid(row=0,column=0,sticky='ew',padx=(0,self.px(6)))
         self.stop_button=ttk.Button(controls,command=self.stop,style='Secondary.TButton',state='disabled',image=(self.theme.stop_icon,'disabled',self.theme.disabled_stop_icon),compound='left')
@@ -208,8 +207,9 @@ class CookingApp:
 
     def configure_hotkeys(self):
         available=not self.capturing and not self.closing and self.help_dialog is None
-        self.start_listener.configure(value=self.start_key.get(),enabled=available and bool(self.child)
-                                      and self.run_state in ('ready','running','paused'))
+        self.start_listener.configure(value=self.start_key.get(),enabled=available and (
+            (not self.child and self.run_state in ('idle','finished','error')) or
+            (bool(self.child) and self.run_state in ('ready','running','paused'))))
         self.stop_listener.configure(value=self.stop_key.get(),enabled=available and bool(self.child))
 
     def begin_capture(self,event,variable):
@@ -254,7 +254,7 @@ class CookingApp:
         self.root.title('Hololive Dreams — '+self.tr('title'))
         for widget,key in ((self.title,'title'),(self.instructions,'instructions'),(self.language_label,'language'),
                            (self.games_label,'games'),(self.record,'developer'),(self.start_button,'start'),
-                           (self.stop_button,'stop'),(self.model_label,'model'),(self.load_button,'load'),
+                           (self.stop_button,'stop'),(self.model_label,'model'),
                            (self.start_key_label,'start_key'),(self.stop_key_label,'stop_key')):
             widget.configure(text=self.tr(key))
         for key,choice in zip(MODEL_FILES,self.model_choices):choice.configure(text=self.tr(key))
@@ -274,8 +274,8 @@ class CookingApp:
     def set_controls(self):
         available=not self.closing and self.help_dialog is None
         unlocked=not self.child and available
-        self.load_button.configure(state='normal' if unlocked else 'disabled')
-        self.start_button.configure(state='normal' if available and self.child and self.run_state=='ready' else 'disabled')
+        can_start=(unlocked and self.run_state in ('idle','finished','error')) or (available and bool(self.child) and self.run_state=='ready')
+        self.start_button.configure(state='normal' if can_start else 'disabled')
         self.stop_button.configure(state='normal' if available and self.child and self.run_state!='stopping' else 'disabled')
         for widget in (self.games_entry,self.record,*self.model_choices):
             widget.configure(state='normal' if unlocked else 'disabled')
@@ -285,6 +285,7 @@ class CookingApp:
 
     def set_state(self,state):
         if state not in UI[self.language.get()]:return
+        if state in ('error','finished','stopping'):self.start_requested=False
         self.run_state=state
         self.render_status()
         self.set_controls()
@@ -397,7 +398,15 @@ class CookingApp:
         self.configure_hotkeys()
 
     def start(self):
-        if not self.child or self.run_state!='ready' or self.help_dialog is not None or self.closing:return
+        if self.help_dialog is not None or self.closing or self.capturing is not None:return
+        if not self.child:
+            if self.run_state not in ('idle','finished','error'):return
+            self.start_requested=True
+            self.load_models()
+            if not self.child:self.start_requested=False
+            return
+        if self.run_state!='ready' or self.stop_path.exists() or self.child.poll() is not None:return
+        self.start_requested=False
         request_game_foreground()
         pending=self.start_path.with_suffix('.pending')
         pending.write_text(json.dumps({'start':True}),encoding='utf8')
@@ -410,6 +419,7 @@ class CookingApp:
         self.log.see('end'); self.log.configure(state='disabled')
 
     def stop(self):
+        self.start_requested=False
         if self.child:
             self.stop_path.touch(); self.set_state('stopping')
 
@@ -435,7 +445,7 @@ class CookingApp:
         while not self.messages.empty():
             event,value=self.messages.get_nowait()
             if event=='start' and not self.closing and self.capturing is None and self.help_dialog is None:
-                if self.run_state=='ready':self.start()
+                if self.run_state in ('idle','finished','error','ready'):self.start()
                 elif self.child and self.run_state in ('running','paused'):self.toggle()
             elif event=='stop': self.stop()
             elif event=='error': self.append(value)
@@ -457,7 +467,9 @@ class CookingApp:
                     self.completed=len(data['games']);self.count.configure(text=self.completion_text(self.completed))
             except (OSError, ValueError, KeyError): pass
             code = self.child.poll()
+            if code is None and self.start_requested and self.run_state=='ready':self.start()
             if code is not None:
+                self.start_requested=False
                 self.stream.close(); self.stream=None; self.child=None
                 if self.session_developer:
                     archives=list(self.session.glob('*.zip'))

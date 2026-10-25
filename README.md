@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.0
+# Hololive Dreams Auto Collect Cooking — 1.1.1
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ A cooking program for Collect Cooking in the Windows version of *hololive Dreams
 
 ## Download
 
-Open [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.0) and download `Collect-Cooking-Auto-v1.1.0-win64.7z`. Extract it with 7-Zip, then run `Collect-Cooking-Auto-v1.1.0.exe` inside the extracted folder.
+Open [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1) and download `Collect-Cooking-Auto-v1.1.1-win64.7z`. Extract it with 7-Zip, then run `Collect-Cooking-Auto-v1.1.1.exe` inside the extracted folder.
 
 Keep `_internal` beside the EXE. Python, the inference libraries and all five model checkpoints are included. `SHA256SUMS.txt` verifies the downloads; `models.zip` is for source users. GitHub's source ZIP requires installing dependencies and models separately.
 
@@ -14,7 +14,7 @@ Keep `_internal` beside the EXE. Python, the inference libraries and all five mo
 
 - Recognizes recipe ingredients, remaining quantities and tray contents, then plans ingredient picks, clearing triples and plate shuffles.
 - Two recognition options: **Standard** (ResNet18) and **Advanced** (ResNet101). Standard has lower computing requirements; Advanced suits more powerful PCs.
-- Model loading and gameplay start are separate. The loaded point classifier also verifies on-demand supplemental candidates.
+- Start automatically loads and warms up the selected model, then brings the game to the foreground and begins. The point classifier also verifies on-demand supplemental candidates.
 - Configurable game target, with automatic continuation after a completed game.
 - Six interface languages: English, Traditional Chinese, Japanese, Korean, Indonesian and Simplified Chinese. The language choice applies to the program interface.
 - Custom shortcuts, activity log and optional local developer diagnostics.
@@ -23,8 +23,8 @@ Keep `_internal` beside the EXE. Python, the inference libraries and all five mo
 
 1. Open the game and enter Collect Cooking.
 2. Run the EXE, choose a program language and recognition model, and enter a positive game target. The initial target is five games.
-3. Click **Load model** and wait for the ready message.
-4. Click **Start** to have the program attempt to restore and bring the game to the foreground, or press **F8** in the game. If Windows blocks the switch, return to the game manually. Keep its window unobstructed.
+3. Click **Start**, or press **F8**, to load the selected model automatically. You can cancel loading with **Stop** or **Esc**.
+4. After loading, the program attempts to restore and bring the game to the foreground, then starts automatically. If Windows blocks the switch, return to the game manually. Keep its window unobstructed.
 5. **F8** pauses/resumes; **Esc** or **Stop** ends the run. A focus change pauses input; return to the game and press F8 to resume. Stop before selecting and loading another model.
 
 Click a shortcut field, then press the desired key or Ctrl/Alt/Shift combination. Leaving the field without completing a shortcut preserves the previous setting. Settings are saved for the next launch.

@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.0
+# Hololive Dreams Auto Collect Cooking — 1.1.1
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Program memasak otomatis untuk Collect Cooking pada *hololive Dreams* versi Wind
 
 ## Unduh
 
-Buka [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.0) dan unduh `Collect-Cooking-Auto-v1.1.0-win64.7z`. Ekstrak dengan 7-Zip, lalu jalankan `Collect-Cooking-Auto-v1.1.0.exe` di dalam folder hasil ekstraksi.
+Buka [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1) dan unduh `Collect-Cooking-Auto-v1.1.1-win64.7z`. Ekstrak dengan 7-Zip, lalu jalankan `Collect-Cooking-Auto-v1.1.1.exe` di dalam folder hasil ekstraksi.
 
 Pertahankan folder `_internal` di samping EXE. Python, pustaka inferensi dan kelima model sudah disertakan. Gunakan `SHA256SUMS.txt` untuk memeriksa unduhan. `models.zip` ditujukan untuk menjalankan kode sumber. ZIP sumber dari GitHub memerlukan pemasangan dependensi dan model secara terpisah.
 
@@ -14,7 +14,7 @@ Pertahankan folder `_internal` di samping EXE. Python, pustaka inferensi dan kel
 
 - Mengenali resep, jumlah bahan yang masih diperlukan dan isi slot, lalu merencanakan pengambilan bahan, pencocokan tiga benda dan pengocokan piring.
 - Pilihan **Standar** (ResNet18) dan **Lanjutan** (ResNet101). Standar membutuhkan komputasi lebih rendah; Lanjutan sesuai untuk komputer yang lebih bertenaga.
-- Pemuatan model terpisah dari mulai bermain. Model klasifikasi titik yang dimuat juga memverifikasi kandidat tambahan sesuai kebutuhan.
+- Mulai memuat dan menyiapkan model yang dipilih secara otomatis, lalu membawa game ke depan dan memulai. Model klasifikasi titik juga memverifikasi kandidat tambahan sesuai kebutuhan.
 - Target jumlah permainan, kelanjutan otomatis setelah satu permainan selesai, dan berhenti ketika target tercapai.
 - Enam bahasa antarmuka: Inggris, Mandarin Tradisional, Jepang, Korea, Indonesia dan Mandarin Sederhana. Pilihan bahasa berlaku pada antarmuka program.
 - Pintasan yang dapat diubah, catatan aktivitas dan diagnostik lokal opsional.
@@ -23,8 +23,8 @@ Pertahankan folder `_internal` di samping EXE. Python, pustaka inferensi dan kel
 
 1. Buka game dan masuk ke Collect Cooking.
 2. Jalankan EXE, pilih bahasa dan model, lalu masukkan target permainan berupa bilangan bulat positif. Nilai awalnya lima permainan.
-3. Klik **Muat model** dan tunggu hingga siap.
-4. Klik **Mulai** agar program mencoba memulihkan jendela game dan membawanya ke depan, atau tekan **F8** di dalam game. Jika Windows memblokir perpindahan, kembali ke game secara manual. Pastikan jendela game tidak tertutup.
+3. Klik **Mulai** atau tekan **F8** untuk memuat model yang dipilih secara otomatis. Batalkan pemuatan dengan **Hentikan** atau **Esc**.
+4. Setelah pemuatan selesai, program mencoba memulihkan jendela game dan membawanya ke depan, lalu memulai secara otomatis. Jika Windows memblokir perpindahan, kembali ke game secara manual. Pastikan jendela game tidak tertutup.
 5. **F8** menjeda/melanjutkan; **Esc** atau **Hentikan** mengakhiri sesi. Beralih ke jendela lain menjeda input. Kembali ke game lalu tekan F8 untuk melanjutkan. Hentikan sebelum memilih dan memuat model lain.
 
 Klik kolom pintasan, lalu tekan tombol atau kombinasi Ctrl/Alt/Shift yang diinginkan. Meninggalkan kolom sebelum menyelesaikan input mempertahankan pengaturan sebelumnya. Pengaturan disimpan untuk sesi berikutnya.

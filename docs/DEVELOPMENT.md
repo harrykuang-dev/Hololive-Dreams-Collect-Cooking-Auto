@@ -24,12 +24,12 @@ py -3.13 -m venv .venv-runtime
 .\build.ps1
 ```
 
-產物為 `dist/Collect-Cooking-Auto-v1.1.0/`，EXE與 `_internal` 需一起保留。建置環境不應安裝PyTorch；封裝時亦明確排除PyTorch、torchvision與訓練模型定義。
+產物為 `dist/Collect-Cooking-Auto-v1.1.1/`，EXE與 `_internal` 需一起保留。建置環境不應安裝PyTorch；封裝時亦明確排除PyTorch、torchvision與訓練模型定義。
 
 封裝程式可只載入與暖機模型，核對後退出：
 
 ```powershell
-.\Collect-Cooking-Auto-v1.1.0.exe --worker --model resnet18 --check-model-only --games 1 --output .\model-check\runs --control-file .\model-check\stop
+.\Collect-Cooking-Auto-v1.1.1.exe --worker --model resnet18 --check-model-only --games 1 --output .\model-check\runs --control-file .\model-check\stop
 ```
 
 將 `resnet18` 改成 `resnet101` 可核對進階模型。環境變數 `COOKING_INFERENCE_BACKEND=cpu` 可核對CPU路徑。結果包含實際後端、精度、GPU、暖機狀態與PyTorch載入檢查；此命令不建立遊戲擷取或輸入介面。

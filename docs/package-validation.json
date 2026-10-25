@@ -1,9 +1,9 @@
 {
   "build": "complete-shared-fp32-runtime",
-  "frontend_version": "1.1.0",
+  "frontend_version": "1.1.1",
   "runtime_version": "e059fd107499d2d3",
-  "exe_sha256": "5331381142d372ada46d95a21abc79d260c76eeac71f5eecfd0302950036e911",
-  "unit_tests_passed": 70,
+  "exe_sha256": "bb3885429504357e9414ecc5147e4224ad2ca469d95b48e85e90bcaf5ff4e1f0",
+  "unit_tests_passed": 74,
   "packaged_checks": [
     {
       "model": "resnet18",
@@ -16,7 +16,7 @@
         "gpu": {
           "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
           "compute": "8.9",
-          "driver_api": 13040,
+          "driver_api": 13050,
           "device": 0
         },
         "tensorrt": "10.13.3.9.post1",
@@ -37,7 +37,7 @@
         "gpu": {
           "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
           "compute": "8.9",
-          "driver_api": 13040,
+          "driver_api": 13050,
           "device": 0
         },
         "tensorrt": "10.13.3.9.post1",
@@ -257,14 +257,14 @@
   "game_inputs_during_checks": 0,
   "diagnostic_hard_cap_verification": {
     "passed": true,
-    "unit_tests_passed": 70,
+    "unit_tests_passed": 74,
     "hard_limit_bytes": 20000000,
     "real_limit_text_overflow_test": "passed; all text reconstructed byte for byte",
     "round_screenshot_eviction_test": "passed; text scores retained",
     "packaged_score": 9280,
-    "packaged_zip_bytes": 209294,
+    "packaged_zip_bytes": 209297,
     "game_inputs_sent": 0,
-    "exe_sha256": "5331381142d372ada46d95a21abc79d260c76eeac71f5eecfd0302950036e911"
+    "exe_sha256": "bb3885429504357e9414ecc5147e4224ad2ca469d95b48e85e90bcaf5ff4e1f0"
   },
   "default_window": {
     "client_pixels": [
@@ -278,5 +278,15 @@
     ]
   },
   "version_label_opens_repository": true,
-  "ui_language_checks": 6
+  "ui_language_checks": 6,
+  "start_flow": {
+    "button_loads_selected_model": true,
+    "starts_after_warmup": true,
+    "focus_requested_before_game_start": true,
+    "stop_cancels_pending_start": true,
+    "duplicate_start_does_not_spawn_workers": true,
+    "failed_load_allows_retry": true,
+    "verified_with_mock_game_input": true,
+    "live_gameplay_tested": false
+  }
 }
