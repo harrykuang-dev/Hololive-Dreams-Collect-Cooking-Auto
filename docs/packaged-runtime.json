@@ -207,7 +207,7 @@
   "old_supplement_classifier_packaged": false,
   "start_requires_explicit_request_after_model_loading": true,
   "launcher_files": {
-    "gui.py": "74ddec8247e78c5f306f5e4adc070bcd11fb88c98432adaaf0181d2fdc61746f",
+    "gui.py": "62dd14bf9faa452c1bbe8e4e877da52689cdad9211113641f6d46f39009ebcbf",
     "ui_text.py": "ff592a68be0f2af898ff61d29e8a217fffc428c5dc7c664ef10de4a4ced023c8",
     "model_selection.py": "6a953e3de6249526e90ff6ebdee0f74d5ca13156422b4909fd67886969c7dcda",
     "fluent_theme.py": "c6718d4a30a4aa4a7158b41f094cb078878ff33ad3dd818b09c0409172aaf2fa",
@@ -235,5 +235,14 @@
     "archive_hard_limit_bytes": 20000000,
     "text_overflow": "multiple independent ZIP files; complete raw text retained"
   },
-  "distribution": "single complete package; all runtimes included; one shared FP32 ONNX model set"
+  "distribution": "single complete package; all runtimes included; one shared FP32 ONNX model set",
+  "default_window": {
+    "client_pixels": [
+      517,
+      1055
+    ],
+    "reference_dpi": 120,
+    "dpi_scaling": true
+  },
+  "version_label_opens_repository": true
 }

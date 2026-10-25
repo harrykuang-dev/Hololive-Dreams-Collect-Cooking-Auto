@@ -2,7 +2,7 @@
   "build": "complete-shared-fp32-runtime",
   "frontend_version": "1.1.0",
   "runtime_version": "e059fd107499d2d3",
-  "exe_sha256": "00345c82009b0ee386bef203e2c9431c7098bd56bf911f0aebe5bcb0651177dd",
+  "exe_sha256": "5331381142d372ada46d95a21abc79d260c76eeac71f5eecfd0302950036e911",
   "unit_tests_passed": 70,
   "packaged_checks": [
     {
@@ -264,6 +264,19 @@
     "packaged_score": 9280,
     "packaged_zip_bytes": 209294,
     "game_inputs_sent": 0,
-    "exe_sha256": "00345c82009b0ee386bef203e2c9431c7098bd56bf911f0aebe5bcb0651177dd"
-  }
+    "exe_sha256": "5331381142d372ada46d95a21abc79d260c76eeac71f5eecfd0302950036e911"
+  },
+  "default_window": {
+    "client_pixels": [
+      517,
+      1055
+    ],
+    "reference_dpi": 120,
+    "outer_pixels_on_reference_monitor": [
+      535,
+      1102
+    ]
+  },
+  "version_label_opens_repository": true,
+  "ui_language_checks": 6
 }

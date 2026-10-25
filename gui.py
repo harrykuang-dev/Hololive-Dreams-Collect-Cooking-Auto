@@ -16,6 +16,8 @@ import shutil
 import webbrowser
 
 VERSION = '1.1.0'
+DEFAULT_CLIENT_SIZE = (517, 1055)
+DEFAULT_CLIENT_DPI = 120
 ROOT = Path(__file__).resolve().parent
 BOT = ROOT / 'outputs' / 'kitchen-bot'
 sys.path.insert(0,str(BOT))
@@ -82,8 +84,10 @@ class CookingApp:
         self.px = lambda n: max(1, round(n*self.scale))
         root.tk.call('tk', 'scaling', self.scale*96/72)
         root.configure(bg=BG)
-        height=min(self.px(800), root.winfo_screenheight()-80)
-        root.geometry(f'{self.px(450)}x{height}')
+        size_scale=self.scale*96/DEFAULT_CLIENT_DPI
+        width=round(DEFAULT_CLIENT_SIZE[0]*size_scale)
+        height=min(round(DEFAULT_CLIENT_SIZE[1]*size_scale), root.winfo_screenheight()-80)
+        root.geometry(f'{width}x{height}')
         root.minsize(self.px(360), min(self.px(640), height))
         root.protocol('WM_DELETE_WINDOW', self.close)
         self.theme=FluentTheme(root,self.scale)
@@ -175,7 +179,10 @@ class CookingApp:
         scrollbar=ttk.Scrollbar(log_card,command=self.log.yview);self.log.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side='right',fill='y',padx=(self.px(8),0));self.log.pack(fill='both',expand=True)
         footer=ttk.Frame(main);footer.grid(row=9,column=0,sticky='ew',pady=(self.px(8),0));footer.columnconfigure(0,weight=1)
-        ttk.Label(footer,text='v'+VERSION.split('-')[0],style='Intro.TLabel').grid(row=0,column=0,sticky='w')
+        self.version_label=ttk.Label(footer,text='v'+VERSION.split('-')[0],style='Intro.TLabel',cursor='hand2',takefocus=True)
+        self.version_label.grid(row=0,column=0,sticky='w')
+        for event in ('<Button-1>','<Return>','<space>'):
+            self.version_label.bind(event,lambda e:webbrowser.open(PROJECT_URL))
         def fit_page(event=None):
             width=self.viewport.winfo_width();height=self.viewport.winfo_height()
             requested=main.winfo_reqheight()
