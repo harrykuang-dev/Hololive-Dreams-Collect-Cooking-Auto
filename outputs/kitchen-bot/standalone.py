@@ -3,6 +3,7 @@
 F8 starts/pauses, Escape exits. Never clicks while another window has focus.
 --replay checks recorded images without creating a capture or input adapter.
 """
+from image_io import read_image
 import os,argparse,ctypes as C,json,queue,threading,time,hashlib,shutil
 from ctypes import wintypes as W
 from pathlib import Path
@@ -153,7 +154,7 @@ class FrameWriter:
         if self.thread is not None:self.jobs.put(None);self.jobs.join();self.thread.join()
 
 def replay(file,model):
-    frame=cv2.imread(str(file))
+    frame=read_image(str(file))
     if frame is None:raise ValueError('Image cannot be read')
     result=model.analyze(frame,fast=True);planner=Planner()
     return {'action':planner.propose(result),'status':planner.status(),'perception':result}

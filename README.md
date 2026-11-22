@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.1
+# Hololive Dreams Auto Collect Cooking — 1.1.2
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ A cooking program for Collect Cooking in the Windows version of *hololive Dreams
 
 ## Download
 
-Open [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1) and download `Collect-Cooking-Auto-v1.1.1-win64.7z`. Extract it with 7-Zip, then run `Collect-Cooking-Auto-v1.1.1.exe` inside the extracted folder.
+Open [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.2) and download `Collect-Cooking-Auto-v1.1.2-win64.7z`. Extract it with 7-Zip, then run `Collect-Cooking-Auto-v1.1.2.exe` inside the extracted folder.
 
 Keep `_internal` beside the EXE. Python, the inference libraries and all five model checkpoints are included. `SHA256SUMS.txt` verifies the downloads; `models.zip` is for source users. GitHub's source ZIP requires installing dependencies and models separately.
 

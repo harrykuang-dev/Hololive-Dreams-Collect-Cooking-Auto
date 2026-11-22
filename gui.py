@@ -15,7 +15,7 @@ import tempfile
 import shutil
 import webbrowser
 
-VERSION = '1.1.1'
+VERSION = '1.1.2'
 DEFAULT_CLIENT_SIZE = (517, 1055)
 DEFAULT_CLIENT_DPI = 120
 ROOT = Path(__file__).resolve().parent
@@ -555,7 +555,8 @@ def check_result_screen(args):
     from result_reader import ResultReader
     from screen_state import ScreenState
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    frame=cv2.imread(str(args.check_result_screen))
+    from image_io import read_image
+    frame=read_image(str(args.check_result_screen))
     if frame is None:raise ValueError('Result image could not be read')
     h,w=frame.shape[:2];canonical=cv2.resize(frame[max(0,h-round(w*9/16)):],(1536,864))
     result=ResultReader().read(canonical,ScreenState().classify(canonical))

@@ -1,4 +1,4 @@
-# Hololive Dreams Auto Collect Cooking — 1.1.1
+# Hololive Dreams Auto Collect Cooking — 1.1.2
 
 [English](README.md) · [繁體中文](README.zh-TW.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Indonesian](README.id.md) · [简体中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Windows版《hololive Dreams》拼配厨房的自动料理程序。通过游戏�
 
 ## 下载
 
-前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.1)，下载 `Collect-Cooking-Auto-v1.1.1-win64.7z`。用7-Zip解压，再运行解压文件夹中的 `Collect-Cooking-Auto-v1.1.1.exe`。
+前往 [GitHub Releases](https://github.com/harrykuang-dev/Hololive-Dreams-Collect-Cooking-Auto/releases/tag/v1.1.2)，下载 `Collect-Cooking-Auto-v1.1.2-win64.7z`。用7-Zip解压，再运行解压文件夹中的 `Collect-Cooking-Auto-v1.1.2.exe`。
 
 请保留EXE旁的 `_internal` 文件夹。已包含Python、推理库及五份模型权重。`SHA256SUMS.txt`用于核对下载文件；`models.zip`供源码使用。GitHub自动生成的源码ZIP需要另外安装依赖和模型。
 

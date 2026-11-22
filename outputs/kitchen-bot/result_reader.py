@@ -1,4 +1,5 @@
 """Read the current round's blue/white result digits, never the best score."""
+from image_io import read_image
 from pathlib import Path
 import time
 import cv2
@@ -28,7 +29,7 @@ class ResultReader:
         self.templates={}
         for field in REGIONS:
             root=Path(__file__).parent/'result-digits'/field
-            self.templates[field]=[(int(p.stem.split('-')[0]),cv2.imread(str(p),0)>127)
+            self.templates[field]=[(int(p.stem.split('-')[0]),read_image(str(p),0)>127)
                                    for p in sorted(root.glob('*.png'))]
 
     def read(self,canonical,state):

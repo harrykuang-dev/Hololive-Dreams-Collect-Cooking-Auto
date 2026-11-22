@@ -1,14 +1,13 @@
 {
   "build": "complete-shared-fp32-runtime",
-  "frontend_version": "1.1.1",
-  "runtime_version": "e059fd107499d2d3",
-  "exe_sha256": "bb3885429504357e9414ecc5147e4224ad2ca469d95b48e85e90bcaf5ff4e1f0",
+  "frontend_version": "1.1.2",
+  "runtime_version": "4d85adc138fb02b2",
+  "exe_sha256": "192a4a94ebfeadd007433cae37ff1bd050834877624b9673d0715dc45c3b8597",
   "unit_tests_passed": 74,
   "packaged_checks": [
     {
       "model": "resnet18",
       "requested_backend": "auto",
-      "device": null,
       "actual": {
         "backend": "tensorrt",
         "requested_backend": "auto",
@@ -24,12 +23,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     },
     {
       "model": "resnet101",
       "requested_backend": "auto",
-      "device": null,
       "actual": {
         "backend": "tensorrt",
         "requested_backend": "auto",
@@ -45,56 +44,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     },
     {
       "model": "resnet18",
       "requested_backend": "directml",
-      "device": "1",
-      "actual": {
-        "backend": "directml",
-        "requested_backend": "directml",
-        "precision": "fp32",
-        "gpu": {
-          "device": 1,
-          "gpu": "AMD Radeon 780M Graphics",
-          "vendor_id": 4098,
-          "dedicated_video_bytes": 429719552,
-          "api": "DirectX 12"
-        },
-        "tensorrt": null,
-        "fallback_reason": null
-      },
-      "passed": true,
-      "torch_imported": false,
-      "game_inputs_sent": 0
-    },
-    {
-      "model": "resnet101",
-      "requested_backend": "directml",
-      "device": "1",
-      "actual": {
-        "backend": "directml",
-        "requested_backend": "directml",
-        "precision": "fp32",
-        "gpu": {
-          "device": 1,
-          "gpu": "AMD Radeon 780M Graphics",
-          "vendor_id": 4098,
-          "dedicated_video_bytes": 429719552,
-          "api": "DirectX 12"
-        },
-        "tensorrt": null,
-        "fallback_reason": null
-      },
-      "passed": true,
-      "torch_imported": false,
-      "game_inputs_sent": 0
-    },
-    {
-      "model": "resnet18",
-      "requested_backend": "directml",
-      "device": "0",
       "actual": {
         "backend": "directml",
         "requested_backend": "directml",
@@ -111,12 +66,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     },
     {
       "model": "resnet101",
       "requested_backend": "directml",
-      "device": "0",
       "actual": {
         "backend": "directml",
         "requested_backend": "directml",
@@ -133,12 +88,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     },
     {
       "model": "resnet18",
       "requested_backend": "cpu",
-      "device": null,
       "actual": {
         "backend": "cpu",
         "requested_backend": "cpu",
@@ -149,12 +104,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     },
     {
       "model": "resnet101",
       "requested_backend": "cpu",
-      "device": null,
       "actual": {
         "backend": "cpu",
         "requested_backend": "cpu",
@@ -165,128 +120,12 @@
       },
       "passed": true,
       "torch_imported": false,
-      "game_inputs_sent": 0
-    },
-    {
-      "test": "packaged-result-reading-and-hard-cap",
-      "score": 9280,
-      "passed": true,
-      "game_inputs_sent": 0
-    },
-    {
-      "test": "packaged-result-reading-and-hard-cap",
-      "score": 9600,
-      "passed": true,
-      "game_inputs_sent": 0
+      "game_inputs_sent": 0,
+      "icon_template_count": 270
     }
   ],
-  "semantic_checks": {
-    "amd-fixed": {
-      "resnet18": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2471,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      },
-      "resnet101": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2510,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      }
-    },
-    "nvidia-directml-fixed": {
-      "resnet18": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2471,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      },
-      "resnet101": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2510,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      }
-    },
-    "nvidia-tensorrt": {
-      "resnet18": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2471,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      },
-      "resnet101": {
-        "matching_human_crop_predictions": 2588,
-        "human_correct": 2510,
-        "matching_actions_and_points": 88,
-        "matching_state_identities": 88,
-        "threshold_changes": 0
-      }
-    }
-  },
-  "all_backends_bundled": true,
+  "unicode_install_path_verified": true,
   "shared_onnx_model_files": 5,
-  "model_copies": 1,
-  "requires_pytorch": false,
-  "frontend_unchanged": true,
-  "planning_motion_capture_unchanged": true,
-  "fp32_only": true,
-  "diagnostics": {
-    "events": "permanent",
-    "decisions": "permanent",
-    "round_results": "permanent",
-    "final_screenshots": "capacity-limited; oldest first; shared media budget",
-    "only_ordinary_screenshots_rotate": false,
-    "archive_target_bytes": 20000000,
-    "mandatory_data_can_exceed_target": false,
-    "twenty_round_oversize_test_passed": true,
-    "held_out_result_screens": 6,
-    "jpeg_conditions_per_screen": 3,
-    "uncertain_results": "explicit null and reason; screenshots subject to capacity eviction",
-    "archive_hard_limit_bytes": 20000000,
-    "text_overflow": "multiple independent ZIP files; complete raw text retained"
-  },
-  "floating_probabilities_bitwise_identical": false,
-  "live_game_acceptance_completed": false,
   "game_inputs_during_checks": 0,
-  "diagnostic_hard_cap_verification": {
-    "passed": true,
-    "unit_tests_passed": 74,
-    "hard_limit_bytes": 20000000,
-    "real_limit_text_overflow_test": "passed; all text reconstructed byte for byte",
-    "round_screenshot_eviction_test": "passed; text scores retained",
-    "packaged_score": 9280,
-    "packaged_zip_bytes": 209297,
-    "game_inputs_sent": 0,
-    "exe_sha256": "bb3885429504357e9414ecc5147e4224ad2ca469d95b48e85e90bcaf5ff4e1f0"
-  },
-  "default_window": {
-    "client_pixels": [
-      517,
-      1055
-    ],
-    "reference_dpi": 120,
-    "outer_pixels_on_reference_monitor": [
-      535,
-      1102
-    ]
-  },
-  "version_label_opens_repository": true,
-  "ui_language_checks": 6,
-  "start_flow": {
-    "button_loads_selected_model": true,
-    "starts_after_warmup": true,
-    "focus_requested_before_game_start": true,
-    "stop_cancels_pending_start": true,
-    "duplicate_start_does_not_spawn_workers": true,
-    "failed_load_allows_retry": true,
-    "verified_with_mock_game_input": true,
-    "live_gameplay_tested": false
-  }
+  "live_game_acceptance_completed": false
 }

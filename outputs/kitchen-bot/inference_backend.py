@@ -153,7 +153,7 @@ class TensorRTSession:
         builder=trt.Builder(self.logger)
         network=builder.create_network(1<<int(trt.NetworkDefinitionCreationFlag.EXPLICIT_BATCH))
         parser=trt.OnnxParser(network,self.logger)
-        if not parser.parse_from_file(str(self.path)):
+        if not parser.parse(self.path.read_bytes()):
             raise RuntimeError('TensorRT ONNX conversion: '+'; '.join(str(parser.get_error(i)) for i in range(parser.num_errors)))
         config=builder.create_builder_config()
         config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE,512*1024*1024)

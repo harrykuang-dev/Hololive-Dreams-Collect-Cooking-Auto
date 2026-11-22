@@ -1,4 +1,5 @@
 """Offline visual perception. Receives PNGs; never captures a screen or sends input."""
+from image_io import read_image
 from pathlib import Path
 import json, sys, cv2, numpy as np
 
@@ -12,7 +13,7 @@ class Vision:
         self.samples, self.icons = [], []
         desc, names, colors = [], [], []
         for p in (ROOT/'templates').glob('*.png'):
-            im = cv2.imread(str(p))
+            im = read_image(str(p))
             if p.stem.startswith('icon-'):
                 self.icons.append((p.stem.split('-')[1], im))
                 continue
@@ -147,12 +148,12 @@ class Vision:
 if __name__=='__main__':
     vision=Vision()
     if len(sys.argv)>1:
-        im=cv2.imread(sys.argv[1]); print(json.dumps(vision.analyze(im)))
+        im=read_image(sys.argv[1]); print(json.dumps(vision.analyze(im)))
     else:
         # Persistent JSON-line worker keeps templates and descriptors in memory.
         for line in sys.stdin:
             try:
-                req=json.loads(line); im=cv2.imread(req['path'])
+                req=json.loads(line); im=read_image(req['path'])
                 result=vision.analyze(im)
                 print(json.dumps(result),flush=True)
             except Exception as e:print(json.dumps({'error':str(e)}),flush=True)

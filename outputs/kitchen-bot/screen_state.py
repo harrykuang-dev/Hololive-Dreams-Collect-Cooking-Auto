@@ -1,4 +1,5 @@
 """Cheap screenshot-only state gate; excludes dish overlays and end animations."""
+from image_io import read_image
 from pathlib import Path
 import cv2,numpy as np
 from counters import Counters
@@ -6,11 +7,11 @@ from session_flow import has_next_button
 class ScreenState:
     def __init__(self):
         root=Path(__file__).resolve().parent
-        self.order_mask=cv2.imread(str(root/'ui-order-mask.png'),0)>0
+        self.order_mask=read_image(str(root/'ui-order-mask.png'),0)>0
         self.complete_rois=[(70,250,50,200),(1280,1470,675,815)]
-        self.complete_masks=[cv2.imread(str(root/f'ui-complete-ornament-{i}.png'),0)>0 for i in range(2)]
-        self.burst_mask=cv2.imread(str(root/'ui-burst-mask.png'),0)>0
-        self.results_mask=cv2.imread(str(root/'ui-results-mask.png'),0)>0
+        self.complete_masks=[read_image(str(root/f'ui-complete-ornament-{i}.png'),0)>0 for i in range(2)]
+        self.burst_mask=read_image(str(root/'ui-burst-mask.png'),0)>0
+        self.results_mask=read_image(str(root/'ui-results-mask.png'),0)>0
         self.counters=Counters()
     def classify(self,im):
         hsv=cv2.cvtColor(im,cv2.COLOR_BGR2HSV)

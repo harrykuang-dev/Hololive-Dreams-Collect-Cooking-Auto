@@ -1,4 +1,5 @@
 """Local image-to-decision perception worker; no desktop capture or input."""
+from image_io import read_image
 from pathlib import Path
 import sys,json,time
 import cv2,numpy as np
@@ -32,8 +33,8 @@ class Perception:
         from screen_state import ScreenState
         self.screen_state=ScreenState();self.point_model=point_model
         self.recipe_cache=None
-        self.order_mask=cv2.imread(str(Path(__file__).parent/'ui-order-mask.png'),0)>0
-        self.complete_mask=cv2.imread(str(Path(__file__).parent/'ui-complete-mask.png'),0)>0
+        self.order_mask=read_image(str(Path(__file__).parent/'ui-order-mask.png'),0)>0
+        self.complete_mask=read_image(str(Path(__file__).parent/'ui-complete-mask.png'),0)>0
         self.classifier=None
         self.point_classifier=None
         from icon_classifier import IconClassifier
@@ -177,11 +178,11 @@ class Perception:
 if __name__=='__main__':
     perception=Perception()
     if len(sys.argv)>1:
-        im=cv2.imread(sys.argv[1]);print(json.dumps(perception.analyze(im,sys.argv[2] if len(sys.argv)>2 else None)))
+        im=read_image(sys.argv[1]);print(json.dumps(perception.analyze(im,sys.argv[2] if len(sys.argv)>2 else None)))
     else:
         print(json.dumps({'ready':True,'validation':perception.validation}),flush=True)
         for line in sys.stdin:
             try:
-                req=json.loads(line);im=cv2.imread(req['path']);result=perception.analyze(im,req.get('debug'))
+                req=json.loads(line);im=read_image(req['path']);result=perception.analyze(im,req.get('debug'))
                 print(json.dumps(result),flush=True)
             except Exception as e:print(json.dumps({'error':str(e)}),flush=True)

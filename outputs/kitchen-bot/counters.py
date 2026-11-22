@@ -1,9 +1,10 @@
+from image_io import read_image
 from pathlib import Path
 import cv2,numpy as np
 
 class Counters:
     def __init__(self):
-        self.digits={int(p.stem):cv2.imread(str(p),0) for p in (Path(__file__).parent/'digits').glob('*.png')}
+        self.digits={int(p.stem):read_image(str(p),0) for p in (Path(__file__).parent/'digits').glob('*.png')}
     def cards(self,canonical):
         out=[]
         for i in range(3):

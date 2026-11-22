@@ -3,6 +3,7 @@
 This is a reconstruction of captured observations, not a high-FPS source video.
 It performs no screen capture/input and adds no work to the live decision loop.
 """
+from image_io import read_image
 import argparse,json
 from pathlib import Path
 import cv2
@@ -10,7 +11,7 @@ import cv2
 def build(run,output,fps=10):
     records=[json.loads(s) for s in (run/'decisions.jsonl').read_text(encoding='utf8').splitlines()]
     if not records:raise ValueError('No recorded decisions')
-    first=cv2.imread(records[0]['frame'])
+    first=read_image(records[0]['frame'])
     if first is None:raise ValueError('First recorded image is missing')
     h,w=first.shape[:2];size=(w//2*2,h//2*2)
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -19,7 +20,7 @@ def build(run,output,fps=10):
     start=records[0]['at'];written=0
     try:
         for i,r in enumerate(records):
-            frame=cv2.imread(r['frame'])
+            frame=read_image(r['frame'])
             if frame is None:continue
             frame=cv2.resize(frame,size)
             status=r['status'];a=r['action'];elapsed=(r['at']-start)/1000

@@ -1,4 +1,5 @@
 """Official icon matching with alpha masks, for order cards and tray slots."""
+from image_io import read_image
 from pathlib import Path
 import re,cv2,numpy as np
 from render_samples import LABELS
@@ -9,7 +10,8 @@ class Icons:
         assets=Path(__file__).resolve().parents[1]/'kitchen-assets/textures'
         for p in assets.glob('img_mg_cooking_foodstuff_ingredient*.png'):
             key=re.search(r'ingredient-(\d\d-[a-z]+\d)',p.stem).group(1);label=LABELS[key]
-            im=cv2.imread(str(p),cv2.IMREAD_UNCHANGED)
+            im=read_image(str(p),cv2.IMREAD_UNCHANGED)
+            if im is None:raise ValueError(f'Cannot decode ingredient template: {p}')
             ys,xs=np.where(im[:,:,3]>120);im=im[ys.min():ys.max()+1,xs.min():xs.max()+1]
             # Height of actual visible object, not the transparent canvas.
             for height in [44,50,56,62,68,74,80,86,90]:
